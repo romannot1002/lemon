@@ -1,0 +1,7 @@
+* {
+    cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, auto !important;
+}
+
+a, button, .clickable {
+    cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+}

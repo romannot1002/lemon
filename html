@@ -1,0 +1,726 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$LEMONJAK</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, auto !important;
+        }
+
+        body {
+            width: 100vw;
+            height: 100vh;
+            overflow: hidden;
+            background: #0D0D0D;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            position: relative;
+        }
+
+        /* Lemon Background */
+        .lemon-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #0D0D0D;
+        }
+
+        .lemon {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.2;
+            transition: opacity 0.3s ease;
+            background-image: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770');
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+            pointer-events: auto;
+            will-change: transform;
+        }
+
+        .lemon:hover {
+            opacity: 0.35;
+            transform: scale(1.05);
+        }
+
+        .lemon.happy {
+            background-image: url('https://media.discordapp.net/attachments/1349946231643967600/1436938846490329210/Screenshot_2025-11-08_at_05.50.08.png?ex=69116d16&is=69101b96&hm=ea28c7d1546bc97ff5f11ba11c311a1b9d7d78ab8402ac4a20626c170e4eadb5&=&format=webp&quality=lossless&width=2826&height=1564');
+            opacity: 0.25;
+        }
+
+        .lemon.happy:hover {
+            opacity: 0.4;
+        }
+
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            text-align: center;
+            pointer-events: none;
+        }
+
+        .container > * {
+            pointer-events: auto;
+        }
+
+        /* Header */
+        header {
+            margin-bottom: 50px;
+        }
+
+        .title {
+            font-size: clamp(4rem, 12vw, 10rem);
+            font-weight: 900;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            color: #FFD700;
+            text-shadow: 
+                -6px -6px 0 #000,
+                6px -6px 0 #000,
+                -6px 6px 0 #000,
+                6px 6px 0 #000,
+                -8px 0 0 #000,
+                8px 0 0 #000,
+                0 -8px 0 #000,
+                0 8px 0 #000,
+                0 0 40px rgba(255, 215, 0, 0.5);
+            letter-spacing: -4px;
+            line-height: 0.9;
+            margin-bottom: 25px;
+        }
+
+        .contract-address {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: #ADFF2F;
+            font-family: 'Courier New', monospace;
+            letter-spacing: 1px;
+            font-weight: bold;
+            text-shadow: 
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+            padding: 15px 30px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #ADFF2F;
+            border-radius: 15px;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+            transition: all 0.3s;
+            display: inline-block;
+            word-break: break-all;
+        }
+
+        .contract-address:hover {
+            background: rgba(173, 255, 47, 0.2);
+            transform: scale(1.05);
+            box-shadow: 0 0 20px rgba(173, 255, 47, 0.5);
+        }
+
+        .contract-address:active {
+            transform: scale(0.98);
+        }
+
+        .copy-notification {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) scale(0);
+            background: #ADFF2F;
+            color: #000;
+            padding: 30px 60px;
+            border-radius: 20px;
+            font-size: 2rem;
+            font-weight: bold;
+            z-index: 1000;
+            opacity: 0;
+            transition: all 0.3s;
+            border: 5px solid #000;
+            box-shadow: 0 0 50px rgba(173, 255, 47, 0.8);
+        }
+
+        .copy-notification.show {
+            transform: translate(-50%, -50%) scale(1);
+            opacity: 1;
+        }
+
+        /* Main */
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 40px;
+        }
+
+        /* Buy Button */
+        .btn-buy {
+            padding: 30px 70px;
+            font-size: clamp(1.5rem, 4vw, 2.5rem);
+            font-weight: 900;
+            background: linear-gradient(135deg, #FFD700, #FFED4E);
+            color: #000;
+            text-decoration: none;
+            text-transform: uppercase;
+            border: 6px solid #000;
+            border-radius: 100px;
+            box-shadow: 0 8px 0 #ADFF2F;
+            transition: all 0.2s;
+            letter-spacing: 2px;
+            display: inline-block;
+            position: relative;
+            z-index: 100;
+        }
+
+        .btn-buy:hover {
+            transform: translateY(4px);
+            box-shadow: 0 4px 0 #ADFF2F;
+            background: linear-gradient(135deg, #FFED4E, #ADFF2F);
+        }
+
+        .btn-buy:active {
+            transform: translateY(8px);
+            box-shadow: 0 0 0 #ADFF2F;
+        }
+
+        /* Links Grid */
+        .links-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+            margin-top: 10px;
+            position: relative;
+            z-index: 100;
+        }
+
+        .link-item {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .link-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 140px;
+            height: 140px;
+            background: rgba(0, 0, 0, 0.85);
+            border: 4px solid #FFD700;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            padding: 25px;
+        }
+
+        .link-box:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ADFF2F;
+            transform: scale(1.1) rotate(5deg);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .link-box:active {
+            transform: scale(0.95);
+        }
+
+        .icon-img {
+            width: 70px;
+            height: 70px;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(86%) sepia(85%) saturate(464%) hue-rotate(359deg) brightness(104%) contrast(104%);
+            transition: filter 0.3s;
+        }
+
+        /* NO FILTER for DEX and Gallery logos - and make them BIGGER */
+        .icon-img.no-filter {
+            filter: none !important;
+            width: 110px !important;
+            height: 110px !important;
+        }
+
+        .link-box:hover .icon-img {
+            filter: brightness(0) saturate(100%) invert(88%) sepia(85%) saturate(1636%) hue-rotate(23deg) brightness(104%) contrast(104%);
+        }
+
+        /* Keep DEX and Gallery logos unchanged on hover */
+        .link-box:hover .icon-img.no-filter {
+            filter: none !important;
+        }
+
+        .label {
+            font-size: clamp(0.8rem, 1.5vw, 1rem);
+            font-weight: bold;
+            color: #FFD700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            text-shadow: 
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+        }
+
+        .link-item:hover .label {
+            color: #ADFF2F;
+        }
+
+        /* Footer */
+        footer {
+            position: absolute;
+            bottom: 30px;
+            width: 100%;
+            text-align: center;
+            font-size: clamp(1.2rem, 2.5vw, 1.8rem);
+            color: #FFD700;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            font-weight: bold;
+            padding: 0 20px;
+            z-index: 100;
+            text-shadow: 
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000,
+                3px 3px 0 #000;
+        }
+
+        /* Responsive Adjustments */
+        @media (max-width: 768px) {
+            .title {
+                letter-spacing: -2px;
+            }
+
+            .contract-address {
+                font-size: clamp(0.9rem, 2.5vw, 1.5rem);
+                padding: 12px 20px;
+            }
+            
+            .btn-buy {
+                padding: 25px 50px;
+                border: 5px solid #000;
+            }
+            
+            .links-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 25px;
+            }
+
+            .link-box {
+                width: 120px;
+                height: 120px;
+                padding: 20px;
+            }
+
+            .icon-img {
+                width: 60px;
+                height: 60px;
+            }
+
+            /* Smaller but still bigger than other icons on mobile */
+            .icon-img.no-filter {
+                width: 85px !important;
+                height: 85px !important;
+            }
+
+            .copy-notification {
+                font-size: 1.5rem;
+                padding: 20px 40px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                margin-bottom: 30px;
+            }
+
+            main {
+                gap: 30px;
+            }
+
+            .contract-address {
+                font-size: clamp(0.7rem, 2vw, 1.2rem);
+                padding: 10px 15px;
+                border: 2px solid #ADFF2F;
+            }
+
+            .btn-buy {
+                padding: 20px 40px;
+                border: 4px solid #000;
+            }
+
+            .links-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 20px;
+            }
+
+            .link-item {
+                gap: 10px;
+            }
+
+            .link-box {
+                width: 100px;
+                height: 100px;
+                border: 3px solid #FFD700;
+                padding: 18px;
+            }
+
+            .icon-img {
+                width: 50px;
+                height: 50px;
+            }
+
+            /* Adjusted for small screens */
+            .icon-img.no-filter {
+                width: 70px !important;
+                height: 70px !important;
+            }
+
+            footer {
+                font-size: 1rem;
+                bottom: 20px;
+            }
+
+            .copy-notification {
+                font-size: 1.2rem;
+                padding: 15px 30px;
+            }
+        }
+
+        @media (max-height: 700px) {
+            header {
+                margin-bottom: 30px;
+            }
+
+            main {
+                gap: 25px;
+            }
+
+            .links-grid {
+                gap: 20px;
+            }
+
+            .link-box {
+                width: 110px;
+                height: 110px;
+            }
+
+            footer {
+                bottom: 15px;
+            }
+        }
+
+        /* Prevent text selection */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+
+        .contract-address {
+            -webkit-user-select: text;
+            -moz-user-select: text;
+            -ms-user-select: text;
+            user-select: text;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lemon Background -->
+    <div class="lemon-background" id="lemonBackground"></div>
+
+    <!-- Copy Notification -->
+    <div class="copy-notification" id="copyNotification">COPIED! 🍋</div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <h1 class="title">$LEMONJAK</h1>
+            <div class="contract-address" id="contractAddress" title="Click to copy">
+                GRUd4i8Xt8rxEJ89MCc2UKEDWNucpLhnXQaKMeXPpump
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main>
+            <!-- Buy Button -->
+            <a href="https://pump.fun/coin/GRUd4i8Xt8rxEJ89MCc2UKEDWNucpLhnXQaKMeXPpump" class="btn-buy" target="_blank">BUY NOW</a>
+
+            <!-- Links Grid -->
+            <div class="links-grid">
+                <div class="link-item">
+                    <a href="https://x.com/LemonjakOnSol" class="link-box" target="_blank">
+                        <img src="https://img.icons8.com/ios11/512/FAB005/twitterx--v2.png" alt="X" class="icon-img">
+                    </a>
+                    <span class="label">X</span>
+                </div>
+                
+                <div class="link-item">
+                    <a href="https://x.com/i/communities/1987402746291507256" class="link-box" target="_blank">
+                        <img src="https://cdn-icons-png.flaticon.com/512/8702/8702042.png" alt="Community" class="icon-img">
+                    </a>
+                    <span class="label">COMMUNITY</span>
+                </div>
+                
+                <div class="link-item">
+                    <a href="https://dexscreener.com/solana/5cvsb4yvq5n4wlck2dixpe9uzsmckarmfucnvs9xk3up" class="link-box" target="_blank">
+                        <img src="https://media.discordapp.net/attachments/1349946231643967600/1436957304808407124/New_Project_2.png?ex=69117e46&is=69102cc6&hm=e13c6ada0268d26572910a074216fe356557cda38956012a08d5e41e932409db&=&format=webp&quality=lossless&width=1772&height=1772" alt="DEX" class="icon-img no-filter">
+                    </a>
+                    <span class="label">DEX</span>
+                </div>
+                
+                <div class="link-item">
+                    <a href="http://gallery.lemonjak.fun/" class="link-box" target="_blank">
+                        <img src="https://media.discordapp.net/attachments/1349946231643967600/1436957507590557727/New_Project_3.png?ex=69117e77&is=69102cf7&hm=4444e8ea4169294fcdcbb53872f1fdb656bdbcc5699c93be7239a50cdedd261c&=&format=webp&quality=lossless&width=1772&height=1772" alt="Gallery" class="icon-img no-filter">
+                    </a>
+                    <span class="label">GALLERY</span>
+                </div>
+            </div>
+        </main>
+
+        <!-- Footer -->
+        <footer>
+            <p>©2025 Lemonjak</p>
+        </footer>
+    </div>
+
+    <script>
+        const lemonBackground = document.getElementById('lemonBackground');
+        const contractAddress = document.getElementById('contractAddress');
+        const copyNotification = document.getElementById('copyNotification');
+
+        // Physics simulation
+        class Lemon {
+            constructor(x, y, radius, element) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.vx = (Math.random() - 0.5) * 2;
+                this.vy = (Math.random() - 0.5) * 2;
+                this.element = element;
+                this.happy = false;
+            }
+
+            update(width, height, lemons) {
+                // Update position
+                this.x += this.vx;
+                this.y += this.vy;
+
+                // Bounce off walls
+                if (this.x - this.radius < 0) {
+                    this.x = this.radius;
+                    this.vx *= -1;
+                } else if (this.x + this.radius > width) {
+                    this.x = width - this.radius;
+                    this.vx *= -1;
+                }
+
+                if (this.y - this.radius < 0) {
+                    this.y = this.radius;
+                    this.vy *= -1;
+                } else if (this.y + this.radius > height) {
+                    this.y = height - this.radius;
+                    this.vy *= -1;
+                }
+
+                // Check collision with other lemons
+                for (let other of lemons) {
+                    if (other === this) continue;
+                    
+                    const dx = other.x - this.x;
+                    const dy = other.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = this.radius + other.radius;
+
+                    if (distance < minDistance) {
+                        // Collision detected - elastic collision
+                        const angle = Math.atan2(dy, dx);
+                        const sin = Math.sin(angle);
+                        const cos = Math.cos(angle);
+
+                        // Rotate velocity
+                        const vx1 = this.vx * cos + this.vy * sin;
+                        const vy1 = this.vy * cos - this.vx * sin;
+                        const vx2 = other.vx * cos + other.vy * sin;
+                        const vy2 = other.vy * cos - other.vx * sin;
+
+                        // Swap velocities (elastic collision)
+                        const temp = vx1;
+                        this.vx = vx2 * cos - vy1 * sin;
+                        this.vy = vy1 * cos + vx2 * sin;
+                        other.vx = temp * cos - vy2 * sin;
+                        other.vy = vy2 * cos + temp * sin;
+
+                        // Separate lemons to prevent overlap
+                        const overlap = minDistance - distance;
+                        const moveX = (overlap / 2) * Math.cos(angle);
+                        const moveY = (overlap / 2) * Math.sin(angle);
+                        
+                        this.x -= moveX;
+                        this.y -= moveY;
+                        other.x += moveX;
+                        other.y += moveY;
+                    }
+                }
+
+                // Update DOM position
+                this.element.style.left = (this.x - this.radius) + 'px';
+                this.element.style.top = (this.y - this.radius) + 'px';
+            }
+
+            toggle() {
+                this.happy = !this.happy;
+                if (this.happy) {
+                    this.element.classList.add('happy');
+                } else {
+                    this.element.classList.remove('happy');
+                }
+            }
+        }
+
+        let lemons = [];
+        let animationId = null;
+
+        // Create lemons with physics
+        function createLemons() {
+            // Clear existing
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            lemonBackground.innerHTML = '';
+            lemons = [];
+
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+            
+            // 3x more lemons
+            const baseSize = width < 480 ? 180 : width < 768 ? 225 : 300;
+            const numLemons = width < 480 ? 24 : width < 768 ? 36 : 60;
+
+            // Create lemons with non-overlapping positions
+            for (let i = 0; i < numLemons; i++) {
+                const size = baseSize + (Math.random() - 0.5) * 100;
+                const radius = size / 2;
+                
+                let x, y, attempts = 0;
+                let validPosition = false;
+
+                // Find non-overlapping position
+                while (!validPosition && attempts < 100) {
+                    x = radius + Math.random() * (width - radius * 2);
+                    y = radius + Math.random() * (height - radius * 2);
+                    
+                    validPosition = true;
+                    for (let other of lemons) {
+                        const dx = other.x - x;
+                        const dy = other.y - y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < radius + other.radius + 10) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                    attempts++;
+                }
+
+                if (validPosition) {
+                    // Create DOM element
+                    const element = document.createElement('div');
+                    element.className = 'lemon';
+                    element.style.width = size + 'px';
+                    element.style.height = size + 'px';
+                    element.style.left = (x - radius) + 'px';
+                    element.style.top = (y - radius) + 'px';
+                    
+                    lemonBackground.appendChild(element);
+
+                    // Create lemon object
+                    const lemon = new Lemon(x, y, radius, element);
+                    lemons.push(lemon);
+
+                    // Click handler
+                    element.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        lemon.toggle();
+                    });
+                }
+            }
+
+            // Start animation
+            animate();
+        }
+
+        // Animation loop
+        function animate() {
+            const width = window.innerWidth;
+            const height = window.innerHeight;
+
+            for (let lemon of lemons) {
+                lemon.update(width, height, lemons);
+            }
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Copy contract address to clipboard
+        contractAddress.addEventListener('click', async function(e) {
+            e.stopPropagation();
+            const address = this.textContent.trim();
+            
+            try {
+                await navigator.clipboard.writeText(address);
+                showCopyNotification();
+            } catch (err) {
+                // Fallback for older browsers
+                const textArea = document.createElement('textarea');
+                textArea.value = address;
+                textArea.style.position = 'fixed';
+                textArea.style.left = '-999999px';
+                document.body.appendChild(textArea);
+                textArea.select();
+                try {
+                    document.execCommand('copy');
+                    showCopyNotification();
+                } catch (err) {
+                    console.error('Failed to copy:', err);
+                }
+                document.body.removeChild(textArea);
+            }
+        });
+
+        // Show copy notification
+        function showCopyNotification() {
+            copyNotification.classList.add('show');
+            setTimeout(() => {
+                copyNotification.classList.remove('show');
+            }, 1500);
+        }
+
+        // Initialize
+        createLemons();
+
+        // Handle resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                createLemons();
+            }, 250);
+        });
+    </script>
+</body>
+</html>

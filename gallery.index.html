@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>$LEMONJAK Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, auto !important;
+        }
+
+        body {
+            width: 100%;
+            min-height: 100vh;
+            background: #0D0D0D;
+            font-family: 'Arial', sans-serif;
+            color: #fff;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Lemon Background */
+        .lemon-background {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 1;
+            background: #0D0D0D;
+            pointer-events: none;
+        }
+
+        .lemon {
+            position: absolute;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.15;
+            transition: opacity 0.3s ease;
+            background-image: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770');
+            pointer-events: auto;
+            will-change: transform;
+        }
+
+        .lemon:hover {
+            opacity: 0.3;
+            transform: scale(1.05);
+        }
+
+        .lemon.happy {
+            background-image: url('https://media.discordapp.net/attachments/1349946231643967600/1436938846490329210/Screenshot_2025-11-08_at_05.50.08.png?ex=69116d16&is=69101b96&hm=ea28c7d1546bc97ff5f11ba11c311a1b9d7d78ab8402ac4a20626c170e4eadb5&=&format=webp&quality=lossless&width=2826&height=1564');
+            opacity: 0.2;
+        }
+
+        .lemon.happy:hover {
+            opacity: 0.35;
+        }
+
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        /* Header */
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+            padding-top: 20px;
+        }
+
+        .back-link {
+            display: inline-block;
+            margin-bottom: 30px;
+            padding: 15px 40px;
+            background: rgba(0, 0, 0, 0.7);
+            border: 3px solid #FFD700;
+            border-radius: 50px;
+            color: #FFD700;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.2rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s;
+            text-shadow: 
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+        }
+
+        .back-link:hover {
+            background: rgba(255, 215, 0, 0.2);
+            border-color: #ADFF2F;
+            color: #ADFF2F;
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.4);
+        }
+
+        .title {
+            font-size: clamp(3rem, 10vw, 8rem);
+            font-weight: 900;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            color: #FFD700;
+            text-shadow: 
+                -6px -6px 0 #000,
+                6px -6px 0 #000,
+                -6px 6px 0 #000,
+                6px 6px 0 #000,
+                -8px 0 0 #000,
+                8px 0 0 #000,
+                0 -8px 0 #000,
+                0 8px 0 #000,
+                0 0 40px rgba(255, 215, 0, 0.5);
+            letter-spacing: -3px;
+            line-height: 1;
+            margin-bottom: 20px;
+        }
+
+        .subtitle {
+            font-size: clamp(1.2rem, 3vw, 2rem);
+            color: #ADFF2F;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            font-weight: bold;
+            text-shadow: 
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000,
+                3px 3px 0 #000;
+            margin-bottom: 10px;
+        }
+
+        /* Gallery Grid */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 80px;
+        }
+
+        .gallery-item {
+            position: relative;
+            aspect-ratio: 1;
+            background: rgba(0, 0, 0, 0.8);
+            border: 4px solid #FFD700;
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.3s;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+        }
+
+        .gallery-item:hover {
+            border-color: #ADFF2F;
+            transform: scale(1.05) rotate(2deg);
+            box-shadow: 0 0 40px rgba(255, 215, 0, 0.6);
+            z-index: 10;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover img {
+            transform: scale(1.1);
+        }
+
+        .gallery-item-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            padding: 20px;
+            transform: translateY(100%);
+            transition: transform 0.3s;
+        }
+
+        .gallery-item:hover .gallery-item-overlay {
+            transform: translateY(0);
+        }
+
+        .gallery-item-title {
+            font-size: 1.3rem;
+            font-weight: bold;
+            color: #FFD700;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            text-shadow: 
+                -2px -2px 0 #000,
+                2px -2px 0 #000,
+                -2px 2px 0 #000,
+                2px 2px 0 #000;
+        }
+
+        /* Lightbox */
+        .lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            z-index: 1000;
+            display: none;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox-content {
+            max-width: 90%;
+            max-height: 90%;
+            position: relative;
+        }
+
+        .lightbox-content img {
+            max-width: 100%;
+            max-height: 90vh;
+            border: 5px solid #FFD700;
+            border-radius: 15px;
+            box-shadow: 0 0 50px rgba(255, 215, 0, 0.5);
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: -50px;
+            right: 0;
+            background: #FFD700;
+            color: #000;
+            border: none;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+            transition: all 0.3s;
+            border: 3px solid #000;
+        }
+
+        .lightbox-close:hover {
+            background: #ADFF2F;
+            transform: rotate(90deg) scale(1.1);
+        }
+
+        .lightbox-nav {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: rgba(255, 215, 0, 0.9);
+            color: #000;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            font-size: 2rem;
+            font-weight: bold;
+            cursor: url('https://media.discordapp.net/attachments/1349946231643967600/1436935621397577788/New_Project.png?ex=69116a15&is=69101895&hm=02e8a7d42b417d9a76fb4aa6d41770d607f6b4503c6cca647b43e89c81236f34&=&format=webp&quality=lossless&width=1252&height=1770') 16 16, pointer !important;
+            transition: all 0.3s;
+            border: 3px solid #000;
+        }
+
+        .lightbox-nav:hover {
+            background: #ADFF2F;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .lightbox-prev {
+            left: 20px;
+        }
+
+        .lightbox-next {
+            right: 20px;
+        }
+
+        .lightbox-caption {
+            text-align: center;
+            margin-top: 20px;
+            font-size: 1.5rem;
+            color: #FFD700;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            font-weight: bold;
+            text-shadow: 
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000,
+                3px 3px 0 #000;
+        }
+
+        /* Bottom Corner Links */
+        .corner-links {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 999;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: flex-end;
+        }
+
+        .corner-link-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .corner-link-box {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 70px;
+            height: 70px;
+            background: rgba(0, 0, 0, 0.9);
+            border: 3px solid #FFD700;
+            border-radius: 50%;
+            text-decoration: none;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+            padding: 12px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .corner-link-box:hover {
+            background: rgba(255, 215, 0, 0.3);
+            border-color: #ADFF2F;
+            transform: scale(1.15) rotate(5deg);
+            box-shadow: 0 0 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .corner-link-box:active {
+            transform: scale(0.95);
+        }
+
+        .corner-icon-img {
+            width: 40px;
+            height: 40px;
+            object-fit: contain;
+            filter: brightness(0) saturate(100%) invert(86%) sepia(85%) saturate(464%) hue-rotate(359deg) brightness(104%) contrast(104%);
+            transition: filter 0.3s;
+        }
+
+        /* NO FILTER for DEX logo */
+        .corner-icon-img.no-filter {
+            filter: none !important;
+            width: 50px !important;
+            height: 50px !important;
+        }
+
+        .corner-link-box:hover .corner-icon-img {
+            filter: brightness(0) saturate(100%) invert(88%) sepia(85%) saturate(1636%) hue-rotate(23deg) brightness(104%) contrast(104%);
+        }
+
+        /* Keep DEX logo unchanged on hover */
+        .corner-link-box:hover .corner-icon-img.no-filter {
+            filter: none !important;
+        }
+
+        .corner-label {
+            font-size: 0.85rem;
+            font-weight: bold;
+            color: #FFD700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            background: rgba(0, 0, 0, 0.9);
+            padding: 5px 12px;
+            border-radius: 20px;
+            border: 2px solid #FFD700;
+            text-shadow: 
+                -1px -1px 0 #000,
+                1px -1px 0 #000,
+                -1px 1px 0 #000,
+                1px 1px 0 #000;
+            white-space: nowrap;
+            opacity: 0;
+            transform: translateX(10px);
+            transition: all 0.3s;
+            pointer-events: none;
+        }
+
+        .corner-link-item:hover .corner-label {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        /* Buy Now Button Special Style */
+        .corner-link-box.buy-now {
+            background: linear-gradient(135deg, #FFD700, #FFED4E);
+            border-color: #000;
+            box-shadow: 0 4px 0 #ADFF2F, 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .corner-link-box.buy-now:hover {
+            background: linear-gradient(135deg, #FFED4E, #ADFF2F);
+            transform: scale(1.15) translateY(2px);
+            box-shadow: 0 2px 0 #ADFF2F, 0 0 25px rgba(255, 215, 0, 0.6);
+        }
+
+        .corner-link-box.buy-now .corner-icon-img {
+            filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+        }
+
+        .corner-link-box.buy-now:hover .corner-icon-img {
+            filter: brightness(0) saturate(100%) invert(0%) sepia(0%) saturate(0%) hue-rotate(0deg) brightness(0%) contrast(100%);
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            padding: 40px 20px 100px 20px;
+            font-size: clamp(1rem, 2vw, 1.5rem);
+            color: #FFD700;
+            font-family: 'Comic Sans MS', 'Chalkboard SE', 'Comic Neue', cursive, sans-serif;
+            font-weight: bold;
+            text-shadow: 
+                -3px -3px 0 #000,
+                3px -3px 0 #000,
+                -3px 3px 0 #000,
+                3px 3px 0 #000;
+        }
+
+        footer a {
+            color: #ADFF2F;
+            text-decoration: none;
+            transition: all 0.3s;
+        }
+
+        footer a:hover {
+            color: #FFD700;
+            text-shadow: 0 0 10px rgba(173, 255, 47, 0.5);
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .gallery-grid {
+                grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+                gap: 20px;
+            }
+
+            .title {
+                letter-spacing: -2px;
+            }
+
+            .back-link {
+                font-size: 1rem;
+                padding: 12px 30px;
+            }
+
+            .lightbox-nav {
+                width: 50px;
+                height: 50px;
+                font-size: 1.5rem;
+            }
+
+            .lightbox-prev {
+                left: 10px;
+            }
+
+            .lightbox-next {
+                right: 10px;
+            }
+
+            .corner-links {
+                bottom: 15px;
+                right: 15px;
+                gap: 12px;
+            }
+
+            .corner-link-box {
+                width: 60px;
+                height: 60px;
+            }
+
+            .corner-icon-img {
+                width: 35px;
+                height: 35px;
+            }
+
+            .corner-icon-img.no-filter {
+                width: 45px !important;
+                height: 45px !important;
+            }
+
+            .corner-label {
+                font-size: 0.75rem;
+                padding: 4px 10px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .gallery-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .container {
+                padding: 20px 15px;
+            }
+
+            header {
+                margin-bottom: 40px;
+            }
+
+            .lightbox-close {
+                top: -40px;
+                width: 40px;
+                height: 40px;
+                font-size: 1.5rem;
+            }
+
+            .lightbox-nav {
+                width: 45px;
+                height: 45px;
+                font-size: 1.3rem;
+            }
+
+            .corner-links {
+                bottom: 10px;
+                right: 10px;
+                gap: 10px;
+            }
+
+            .corner-link-box {
+                width: 50px;
+                height: 50px;
+                padding: 10px;
+            }
+
+            .corner-icon-img {
+                width: 30px;
+                height: 30px;
+            }
+
+            .corner-icon-img.no-filter {
+                width: 38px !important;
+                height: 38px !important;
+            }
+
+            .corner-label {
+                display: none;
+            }
+        }
+
+        /* Prevent text selection */
+        body {
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
+</head>
+<body>
+    <!-- Lemon Background -->
+    <div class="lemon-background" id="lemonBackground"></div>
+
+    <!-- Bottom Corner Links (NO HOME LINK) -->
+    <div class="corner-links">
+        <div class="corner-link-item">
+            <span class="corner-label">Buy Now</span>
+            <a href="https://pump.fun/coin/GRUd4i8Xt8rxEJ89MCc2UKEDWNucpLhnXQaKMeXPpump" class="corner-link-box buy-now" target="_blank" title="Buy Now">
+                <img src="https://cdn-icons-png.flaticon.com/512/2331/2331966.png" alt="Buy" class="corner-icon-img">
+            </a>
+        </div>
+        
+        <div class="corner-link-item">
+            <span class="corner-label">X</span>
+            <a href="https://x.com/LemonjakOnSol" class="corner-link-box" target="_blank" title="X (Twitter)">
+                <img src="https://img.icons8.com/ios11/512/FAB005/twitterx--v2.png" alt="X" class="corner-icon-img">
+            </a>
+        </div>
+        
+        <div class="corner-link-item">
+            <span class="corner-label">Community</span>
+            <a href="https://x.com/i/communities/1987402746291507256" class="corner-link-box" target="_blank" title="Community">
+                <img src="https://cdn-icons-png.flaticon.com/512/8702/8702042.png" alt="Community" class="corner-icon-img">
+            </a>
+        </div>
+        
+        <div class="corner-link-item">
+            <span class="corner-label">DEX</span>
+            <a href="https://dexscreener.com/solana/5cvsb4yvq5n4wlck2dixpe9uzsmckarmfucnvs9xk3up" class="corner-link-box" target="_blank" title="DEX">
+                <img src="https://media.discordapp.net/attachments/1349946231643967600/1436957304808407124/New_Project_2.png?ex=69117e46&is=69102cc6&hm=e13c6ada0268d26572910a074216fe356557cda38956012a08d5e41e932409db&=&format=webp&quality=lossless&width=1772&height=1772" alt="DEX" class="corner-icon-img no-filter">
+            </a>
+        </div>
+    </div>
+
+    <!-- Lightbox -->
+    <div class="lightbox" id="lightbox">
+        <div class="lightbox-content">
+            <button class="lightbox-close" id="lightboxClose">×</button>
+            <button class="lightbox-nav lightbox-prev" id="lightboxPrev">‹</button>
+            <img src="" alt="" id="lightboxImg">
+            <button class="lightbox-nav lightbox-next" id="lightboxNext">›</button>
+            <div class="lightbox-caption" id="lightboxCaption"></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <!-- Header -->
+        <header>
+            <a href="/" class="back-link">← Back to Home</a>
+            <h1 class="title">GALLERY</h1>
+            <p class="subtitle">Lemonjak's Finest Moments 🍋</p>
+        </header>
+
+        <!-- Gallery Grid -->
+        <div class="gallery-grid" id="galleryGrid">
+            <!-- Gallery items will be populated by JavaScript -->
+        </div>
+
+        <!-- Footer -->
+        <footer>
+            <p>©2025 Lemonjak | <a href="/">lemonjak.fun</a></p>
+        </footer>
+    </div>
+
+    <script>
+        // Gallery images - YOUR REAL IMAGES
+        const galleryImages = [
+            {
+                src: 'https://pbs.twimg.com/media/GqnRGU0XIAA8tkW?format=jpg&name=medium',
+                title: 'Lemonjak #1'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqluTDXW0AIdDf1?format=png&name=small',
+                title: 'Lemonjak #2'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqrUAPPXEAAxO0g?format=jpg&name=900x900',
+                title: 'Lemonjak #3'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/Gqrh9ehXMAEZuAl?format=jpg&name=small',
+                title: 'Lemonjak #4'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqsSMV3XAAAaAPX?format=png&name=small',
+                title: 'Lemonjak #5'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqteRjsWwAA7Fuw?format=png&name=small',
+                title: 'Lemonjak #6'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GrMK8ZeWUAA5fs5?format=jpg&name=large',
+                title: 'Lemonjak #7'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GrdiwQDbAAAPwDn?format=jpg&name=small',
+                title: 'Lemonjak #8'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GtvIYQjWwAA59FR?format=jpg&name=large',
+                title: 'Lemonjak #9'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/Gxi0AYJWkAA94bU?format=jpg&name=small',
+                title: 'Lemonjak #10'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GxuoBElawAI0Sr1?format=jpg&name=large',
+                title: 'Lemonjak #11'
+            },
+            {
+                src: 'https://cdn.cdnstep.com/r4ugtutoohv9SG0yH6v0/12.webp',
+                title: 'Lemonjak #12'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqZZGUzWEAI_t-4?format=jpg&name=900x900',
+                title: 'Lemonjak #13'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/Gqn3dURWYAAHTiB?format=jpg&name=360x360',
+                title: 'Lemonjak #14'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/Gqb66OxXUAAaynC?format=jpg&name=medium',
+                title: 'Lemonjak #15'
+            },
+            {
+                src: 'https://pbs.twimg.com/media/GqUtT36XoAAOwYT?format=jpg&name=large',
+                title: 'Lemonjak #16'
+            },
+            {
+                src: 'https://media.discordapp.net/attachments/1415515952514203699/1436967893253226606/8b13261e-9168-4c42-83f5-1e12d24c1ce3.png?ex=69118823&is=691036a3&hm=1ab351ae6efe04261a7b0d6f54ed8fc53ebf545ec648d34eec41ff567da24b48&=&format=webp&quality=lossless&width=1280&height=1280',
+                title: 'Lemonjak #17'
+            }
+        ];
+
+        // Lemon Background Physics
+        const lemonBackground = document.getElementById('lemonBackground');
+
+        class Lemon {
+            constructor(x, y, radius, element) {
+                this.x = x;
+                this.y = y;
+                this.radius = radius;
+                this.vx = (Math.random() - 0.5) * 1.5;
+                this.vy = (Math.random() - 0.5) * 1.5;
+                this.element = element;
+                this.happy = false;
+            }
+
+            update(width, height, lemons) {
+                this.x += this.vx;
+                this.y += this.vy;
+
+                if (this.x - this.radius < 0) {
+                    this.x = this.radius;
+                    this.vx *= -1;
+                } else if (this.x + this.radius > width) {
+                    this.x = width - this.radius;
+                    this.vx *= -1;
+                }
+
+                if (this.y - this.radius < 0) {
+                    this.y = this.radius;
+                    this.vy *= -1;
+                } else if (this.y + this.radius > height) {
+                    this.y = height - this.radius;
+                    this.vy *= -1;
+                }
+
+                for (let other of lemons) {
+                    if (other === this) continue;
+                    
+                    const dx = other.x - this.x;
+                    const dy = other.y - this.y;
+                    const distance = Math.sqrt(dx * dx + dy * dy);
+                    const minDistance = this.radius + other.radius;
+
+                    if (distance < minDistance) {
+                        const angle = Math.atan2(dy, dx);
+                        const sin = Math.sin(angle);
+                        const cos = Math.cos(angle);
+
+                        const vx1 = this.vx * cos + this.vy * sin;
+                        const vy1 = this.vy * cos - this.vx * sin;
+                        const vx2 = other.vx * cos + other.vy * sin;
+                        const vy2 = other.vy * cos - other.vx * sin;
+
+                        const temp = vx1;
+                        this.vx = vx2 * cos - vy1 * sin;
+                        this.vy = vy1 * cos + vx2 * sin;
+                        other.vx = temp * cos - vy2 * sin;
+                        other.vy = vy2 * cos + temp * sin;
+
+                        const overlap = minDistance - distance;
+                        const moveX = (overlap / 2) * Math.cos(angle);
+                        const moveY = (overlap / 2) * Math.sin(angle);
+                        
+                        this.x -= moveX;
+                        this.y -= moveY;
+                        other.x += moveX;
+                        other.y += moveY;
+                    }
+                }
+
+                this.element.style.left = (this.x - this.radius) + 'px';
+                this.element.style.top = (this.y - this.radius) + 'px';
+            }
+
+            toggle() {
+                this.happy = !this.happy;
+                if (this.happy) {
+                    this.element.classList.add('happy');
+                } else {
+                    this.element.classList.remove('happy');
+                }
+            }
+        }
+
+        let lemons = [];
+        let animationId = null;
+
+        function createLemons() {
+            if (animationId) {
+                cancelAnimationFrame(animationId);
+            }
+            lemonBackground.innerHTML = '';
+            lemons = [];
+
+            const width = window.innerWidth;
+            const height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+            
+            const baseSize = width < 480 ? 150 : width < 768 ? 200 : 250;
+            const numLemons = width < 480 ? 20 : width < 768 ? 30 : 40;
+
+            for (let i = 0; i < numLemons; i++) {
+                const size = baseSize + (Math.random() - 0.5) * 80;
+                const radius = size / 2;
+                
+                let x, y, attempts = 0;
+                let validPosition = false;
+
+                while (!validPosition && attempts < 100) {
+                    x = radius + Math.random() * (width - radius * 2);
+                    y = radius + Math.random() * (height - radius * 2);
+                    
+                    validPosition = true;
+                    for (let other of lemons) {
+                        const dx = other.x - x;
+                        const dy = other.y - y;
+                        const distance = Math.sqrt(dx * dx + dy * dy);
+                        if (distance < radius + other.radius + 10) {
+                            validPosition = false;
+                            break;
+                        }
+                    }
+                    attempts++;
+                }
+
+                if (validPosition) {
+                    const element = document.createElement('div');
+                    element.className = 'lemon';
+                    element.style.width = size + 'px';
+                    element.style.height = size + 'px';
+                    element.style.left = (x - radius) + 'px';
+                    element.style.top = (y - radius) + 'px';
+                    
+                    lemonBackground.appendChild(element);
+
+                    const lemon = new Lemon(x, y, radius, element);
+                    lemons.push(lemon);
+
+                    element.addEventListener('click', function(e) {
+                        e.stopPropagation();
+                        lemon.toggle();
+                    });
+                }
+            }
+
+            animate();
+        }
+
+        function animate() {
+            const width = window.innerWidth;
+            const height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+
+            for (let lemon of lemons) {
+                lemon.update(width, height, lemons);
+            }
+
+            animationId = requestAnimationFrame(animate);
+        }
+
+        // Populate Gallery
+        const galleryGrid = document.getElementById('galleryGrid');
+        
+        galleryImages.forEach((image, index) => {
+            const item = document.createElement('div');
+            item.className = 'gallery-item';
+            item.innerHTML = `
+                <img src="${image.src}" alt="${image.title}">
+                <div class="gallery-item-overlay">
+                    <div class="gallery-item-title">${image.title}</div>
+                </div>
+            `;
+            item.addEventListener('click', () => openLightbox(index));
+            galleryGrid.appendChild(item);
+        });
+
+        // Lightbox functionality
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxCaption = document.getElementById('lightboxCaption');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const lightboxPrev = document.getElementById('lightboxPrev');
+        const lightboxNext = document.getElementById('lightboxNext');
+
+        let currentImageIndex = 0;
+
+        function openLightbox(index) {
+            currentImageIndex = index;
+            updateLightboxImage();
+            lightbox.classList.add('active');
+        }
+
+        function closeLightbox() {
+            lightbox.classList.remove('active');
+        }
+
+        function updateLightboxImage() {
+            const image = galleryImages[currentImageIndex];
+            lightboxImg.src = image.src;
+            lightboxImg.alt = image.title;
+            lightboxCaption.textContent = image.title;
+        }
+
+        function showPrevImage() {
+            currentImageIndex = (currentImageIndex - 1 + galleryImages.length) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        function showNextImage() {
+            currentImageIndex = (currentImageIndex + 1) % galleryImages.length;
+            updateLightboxImage();
+        }
+
+        lightboxClose.addEventListener('click', closeLightbox);
+        lightboxPrev.addEventListener('click', showPrevImage);
+        lightboxNext.addEventListener('click', showNextImage);
+
+        lightbox.addEventListener('click', (e) => {
+            if (e.target === lightbox) {
+                closeLightbox();
+            }
+        });
+
+        // Keyboard navigation
+        document.addEventListener('keydown', (e) => {
+            if (!lightbox.classList.contains('active')) return;
+            
+            if (e.key === 'Escape') closeLightbox();
+            if (e.key === 'ArrowLeft') showPrevImage();
+            if (e.key === 'ArrowRight') showNextImage();
+        });
+
+        // Initialize
+        createLemons();
+
+        // Handle resize
+        let resizeTimer;
+        window.addEventListener('resize', function() {
+            clearTimeout(resizeTimer);
+            resizeTimer = setTimeout(function() {
+                createLemons();
+            }, 250);
+        });
+
+        // Update lemon positions on scroll
+        let scrollTimer;
+        window.addEventListener('scroll', function() {
+            clearTimeout(scrollTimer);
+            scrollTimer = setTimeout(function() {
+                const height = Math.max(document.documentElement.scrollHeight, window.innerHeight);
+            }, 100);
+        });
+    </script>
+</body>
+</html>
